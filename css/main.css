@@ -1,0 +1,18 @@
+#main {
+    max-height: 50vh;
+}
+#datacanvas {
+    border: 1px solid black;
+    width: 600px;
+    height: 600px;
+}
+
+.myclass {
+    border: 0cap;
+}
+
+#visualization {
+    width: 600px;
+    height: 600px;
+    border: 1px solid lightgray;
+}
