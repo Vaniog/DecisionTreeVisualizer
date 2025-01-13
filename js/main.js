@@ -559,12 +559,22 @@ class DataSet {
 
             const x = (event.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
             const y = (event.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
-            const classSelector = document.getElementById('classSelector');
-            const newLabel = parseInt(classSelector.value, 10);
+            const selectClassBtn = document.getElementById('selectClassBtn');
+            const newLabel = parseInt(selectClassBtn.dataset.choosed, 10);
             this.addPoint(x, y, newLabel);
             this.tree.genSpeed = 0;
             this.tree.fit();
         });
+
+        const selectClassBtn = document.getElementById('selectClassBtn');
+        selectClassBtn.addEventListener("click", () => {
+            console.log(selectClassBtn.dataset.choosed);
+            selectClassBtn.dataset.choosed++;
+            selectClassBtn.dataset.choosed %= 3;
+            selectClassBtn.style.backgroundColor = this.classColors[selectClassBtn.dataset.choosed];
+        });
+
+        this.show();
     }
 
     show() {

@@ -17,15 +17,10 @@
     <div id="main" class="row w-100">
         <div id="leftPanel" class="col-6 d-flex flex-column mt-4 ps-4 pe-4 align-items-end">
             <canvas id="datacanvas" width="800" height="800"></canvas>
-            <div class="p-1 border w-75">
-                <label for="classSelector">Place point:</label>
-                <select id="classSelector" class="form-select-sm">
-                    <option class="color-option" value="0">0</option>
-                    <option class="color-option" value="1">1</option>
-                    <option class="color-option" value="2">2</option>
-                    <option class="color-option" value="3">3</option>
-                    <option class="color-option" value="4">4</option>
-                </select>
+            <div class="p-1 border w-75 d-flex flex-row align-items-center">
+                <div>Draw: </div>
+                <div id="selectClassBtn" class="ms-2" data-choosed="0" style="width: 20px; height: 20px;background-color: red;border-radius: 10px;">
+                </div>
             </div>
             <div class="p-1 border w-75">
                 <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
