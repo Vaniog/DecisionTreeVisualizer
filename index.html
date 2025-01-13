@@ -8,76 +8,113 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/vis.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    <link href="css/vis.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
     <div id="main" class="row w-100">
-        <div id="leftPanel" class="col-6 d-flex flex-column p-5">
+        <div id="leftPanel" class="col-6 d-flex flex-column ps-4 align-items-center">
             <h2> Data Visulization </h2>
-            <select class="form-select mb-2" id="classSelector">
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-            </select>
-            <canvas id="datacanvas" width="600" height="600"></canvas>
-            <div class="mb-2">
-                <div class="form-group">
-                    <label for="dataSelector">Dataset Type</label>
-                    <select class="form-select" id="dataSelector">
-                        <option value="clear">Clear</option>
-                        <option value="spiral">Spiral</option>
-                        <option value="concentricCircles">Concentric Circles</option>
-                        <option value="parallelLines">Parallel Lines</option>
-                        <option value="waveLines">Wave Lines</option>
-                    </select>
-                </div>
+            <canvas id="datacanvas" width="800" height="800" class="m-2"></canvas>
+            <div class="p-1 border w-75">
+                <label for="classSelector">Point Color:</label>
+                <select id="classSelector" class="form-select-sm">
+                    <option class="color-option" value="0">0</option>
+                    <option class="color-option" value="1">1</option>
+                    <option class="color-option" value="2">2</option>
+                    <option class="color-option" value="3">3</option>
+                    <option class="color-option" value="4">4</option>
+                </select>
+            </div>
+            <div class="p-1 border w-75">
+                <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#generateBlock" aria-expanded="false" aria-controls="generateBlock">
+                    Generate Data
+                </button>
+                <button id="generateBtn" class="btn btn-primary">Generate</button>
+                <button class="btn btn-danger" type="button" id="clearBtn">
+                    Clear
+                </button>
 
-                <div class="form-group">
-                    <label for="numPoints" id="numPointsOutput">Number of Points: 50</label>
-                    <input id="numPoints" type="range" class="form-range" value="50" min="10" max="200">
-                </div>
+                <div id="generateBlock" class="mt-2 collapse">
+                    <div class="form-group">
+                        <label for="dataSelector">Dataset Type</label>
+                        <select class="form-select" id="dataSelector">
+                            <option value="clusters">Clusters</option>
+                            <option value="random">Random</option>
+                            <option value="spiral">Spiral</option>
+                            <option value="concentricCircles">Concentric Circles</option>
+                            <option value="parallelLines">Parallel Lines</option>
+                            <option value="waveLines">Wave Lines</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="noise" id="noiseOutput">Noise Level: 10</label>
-                    <input id="noise" type="range" class="form-range" value="10" min="0" max="100">
-                </div>
+                    <div class="form-group">
+                        <label for="numPoints" id="numPointsOutput">Number of points: 40</label>
+                        <input id="numPoints" type="range" class="form-range" value="40" min="10" max="200">
+                    </div>
 
-                <div class="form-group">
-                    <label for="classAmount" id="classAmountOutput">Number of Classes: 2</label>
-                    <input id="classAmount" type="range" class="form-range" value="2" min="1" max="10">
+                    <div class="form-group">
+                        <label for="noise" id="noiseOutput">Noise: 30</label>
+                        <input id="noise" type="range" class="form-range" value="30" min="0" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="classAmount" id="classAmountOutput">Number of classes: 3</label>
+                        <input id="classAmount" type="range" class="form-range" value="3" min="1" max="10">
+                    </div>
                 </div>
             </div>
-            <button id="generateBtn" class="btn btn-primary">Generate</button>
         </div>
 
-        <div id="rightPanel" class="col-6 d-flex flex-column p-5">
+        <div id="rightPanel" class="col-6 d-flex flex-column ps-4 align-items-center">
             <h2> Decision Tree </h2>
             <div id="tree">
             </div>
-            <div id="visualization"></div>
-
-            <div class="mt-2 mb-2">
-                <div class="form-group">
-                    <label for="maxDepth">Max Depth</label>
-                    <input id="maxDepth" type="number" class="form-control" value="5" min="1" max="100">
-                </div>
-
-                <div class="form-group">
-                    <label for="minSamplesSplit">Min Samples Split</label>
-                    <input id="minSamplesSplit" type="number" class="form-control" value="2" min="2" max="100">
-                </div>
-
-                <div class="form-group">
-                    <label for="minSamplesLeaf">Min Samples Leaf</label>
-                    <input id="minSamplesLeaf" type="number" class="form-control" value="1" min="1" max="100">
-                </div>
-                <button id="fitBtn" class="btn btn-primary">Fit</button>
-                <div>
-
+            <div class="d-flex flex-row">
+                <div id="visualization" class="m-2"></div>
+                <canvas id="nodeCanvas" width="150" height="700" class="m-2"></canvas>
+            </div>
+            <div class="p-1 border w-75 d-flex flex-row">
+                <div class="p-1 border">
+                    <div>Accuracy: <span id="accuracy">0.00</span></div>
+                    <div>F1 score: <span id="f1Score">0.00</span></div>
                 </div>
             </div>
+
+            <div class="p-1 border w-75">
+                <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#hyperparametersBlock" aria-expanded="false" aria-controls="hyperparametersBlock">
+                    Hyperparameters
+                </button>
+                <button id="fitBtn" class="btn btn-primary">Fit</button>
+
+                <div class="mt-2 collapse" id="hyperparametersBlock">
+                    <div class="form-group">
+                        <label for="maxDepth" id="maxDepthOutput">Max depth: 5</label>
+                        <input id="maxDepth" type="range" class="form-range" value="5" min="1" max="20">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="minSamplesSplit" id="minSamplesSplitOutput">Min samples split: 2</label>
+                        <input id="minSamplesSplit" type="range" class="form-range" value="2" min="1" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="minSamplesLeaf" id="minSamplesLeafOutput">Min samples leaf: 1</label>
+                        <input id="minSamplesLeaf" type="range" class="form-range" value="1" min="1" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="genSpeed" id="genSpeedOutput">Generation speed: 150</label>
+                        <input id="genSpeed" type="range" class="form-range" value="150" min="1" max="1000">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
