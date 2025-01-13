@@ -96,27 +96,20 @@ class DecisionTree {
             if (node.right != undefined) {
                 nodes.push(node.right);
             }
+            const predictions = this.predict(testX);
+            const accuracy = Math.round(this.calculateAccuracy(predictions, testY) * 1000) / 1000;
+            const f1Score = Math.round(this.calculateF1Score(predictions, testY) * 1000) / 1000;
+
+            document.getElementById('accuracy').textContent = `${accuracy}`;
+            document.getElementById('f1Score').textContent = `${f1Score}`;
 
             this.showGraph();
             this.dataset.show();
 
             if (node.left === undefined && node.right === undefined && nodes.length > 0) {
-                console.log("hi1");
                 setTimeout(improve, 0);
             } else if (nodes.length > 0) {
-                console.log("hi2");
                 setTimeout(improve, this.genSpeed);
-            } else {
-                console.log("hi3");
-                const predictions = this.predict(testX);
-                const accuracy = Math.round(this.calculateAccuracy(predictions, testY) * 1000) / 1000;
-                const f1Score = Math.round(this.calculateF1Score(predictions, testY) * 1000) / 1000;
-
-                document.getElementById('accuracy').textContent = `${accuracy}`;
-                document.getElementById('f1Score').textContent = `${f1Score}`;
-
-                this.showGraph();
-                this.dataset.show();
             }
         }
         improve();
@@ -738,8 +731,7 @@ function generateClusters(numPoints, height, width, numClusters, noise = 0) {
         while (!validCenter) {
             const padding = minDistance;
             centerX = padding + Math.random() * (width - 2 * padding);
-            centerY = padding + Math.random() * (height - 2 * padding)
-            console.log(centerX, centerY);
+            centerY = padding + Math.random() * (height - 2 * padding);
             validCenter = true;
 
             for (const [existingX, existingY] of centers) {
