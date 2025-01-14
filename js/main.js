@@ -222,11 +222,11 @@ class DecisionTree {
     calculateF1Score(predictions, actual) {
         let tp = 0, fp = 0, fn = 0;
         for (let i = 0; i < predictions.length; i++) {
-            if (predictions[i] === 1 && actual[i] === 1) {
+            if (predictions[i] === 0 && actual[i] === 0) {
                 tp++;
-            } else if (predictions[i] === 1 && actual[i] === 0) {
+            } else if (predictions[i] !== 0 && actual[i] === 0) {
                 fp++;
-            } else if (predictions[i] === 0 && actual[i] === 1) {
+            } else if (predictions[i] === 0 && actual[i] !== 0) {
                 fn++;
             }
         }
